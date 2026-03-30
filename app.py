@@ -1,9 +1,21 @@
 import streamlit as st
 import joblib
 import numpy as np
+import os
 
-with open("gradient_boost_model.pkl", "rb") as f:
-    model = joblib.load(f)
+# Updated code for Streamlit upload from github
+base_path = os.path.dirname(__file__)
+model_path = os.path.join(base_path, "gradient_boost_model.pkl")
+
+# Load the model safely
+@st.cache_resource
+def load_model():
+    if os.path.exists(model_path):
+        return joblib.load(model_path)
+    else:
+        return None
+
+model = load_model()
 
 st.title("🌦️ Weather-Related Disease Predictor")
 
